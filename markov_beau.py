@@ -70,16 +70,14 @@ def main():
     count = random.randint(0, 100)
 
     print("Lecture du fichier ...\n")
-    for i in content:
-        if count % max_ == 0:
+    for i in range(len(content)):
+        if i % max_ == 0:
             # On exclue un certain nombre de mots indésirables et d'erreures de la liste de mots
-            if " " in i or (len(i) > 0 and i[0].capitalize() == i[0]) or len(i) < longueur_analyse:
+            if " " in content[i] or (len(content[i]) > 0 and content[i][0].capitalize() == content[i][0]) or len(content[i]) < longueur_analyse:
                 pass
             else:
-                index = content.index(i)
-                mots.append(content[index] + " ")
-                print_bar(index, len(content))
-        count += 1
+                mots.append(content[i] + " ")
+                print_bar(i, len(content))
 
     for i in mots:
         debuts_mot.append( i[:longueur_analyse] )
@@ -89,22 +87,21 @@ def main():
 
     del content # on as vraiment besoin de se séparer de la grosse liste pour les fichiers volumineux
     
-
     # Pour la chaine de markov, on regarde les n premières lettres et on regarde celle qui viens
     prems2 = {}
 
     print("Analyse de la liste de mots...\n")
     
-    for i in mots:
-        if len(i) == 1 or len(i) == 2:
+    for i in range(len(mots)):
+        if len(mots[i]) == 1 or len(mots[i]) == 2:
             continue
-        for x in range(len(i) - longueur_analyse):
-            t = i[x : x + longueur_analyse]
-            suiv = i[x + longueur_analyse]
+        for x in range(len(mots[i]) - longueur_analyse):
+            t = mots[i][x : x + longueur_analyse]
+            suiv = mots[i][x + longueur_analyse]
             if t not in prems2:
-                prems2[t] = [0 for i in range(len(lettres))]
+                prems2[t] = [0 for _ in range(len(lettres))]
             prems2[t][lettres.index(suiv)] += 1
-            print_bar(mots.index(i), len(mots))
+            print_bar(i, len(mots))
             
 
     for i in prems2:

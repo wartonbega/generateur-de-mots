@@ -27,15 +27,13 @@ def main():
     # on analyse donc pas les mêmes mots a chaques fois
     count = random.randint(0, 100)
 
-    for i in content:
-        if count % max_ == 0:
+    for i in range(len(content)):
+        if i % max_ == 0:
             # On exclue un certain nombre de mots indésirables et d'erreures de la liste de mots
-            if " " in i or (len(i) > 0 and i[0].capitalize() == i[0]) or len(i) < longueur_analyse:
+            if " " in content[i] or (len(content[i]) > 0 and content[i][0].capitalize() == content[i][0]) or len(content[i]) < longueur_analyse:
                 pass
             else:
-                index = content.index(i)
-                mots.append(content[index] + " ")
-        count += 1
+                mots.append(content[i] + " ")
 
 
     del content # on as vraiment besoin de se séparer de la grosse liste pour les fichiers volumineux
@@ -56,23 +54,21 @@ def main():
 
     # Pour la chaine de markov, on regarde les n premières lettres et on regarde celle qui viens
     prems2 = {}
-    for i in mots:
-        if len(i) == 1 or len(i) == 2:
+    for i in range(len(mots)):
+        if len(mots[i]) == 1 or len(mots[i]) == 2:
             continue
-        for x in range(len(i) - longueur_analyse):
+        for x in range(len(mots[i]) - longueur_analyse):
             # t est les n premières lettres analysées
-            t = i[x : x + longueur_analyse]
+            t = mots[i][x : x + longueur_analyse]
 
             # et suiv la lettres suivante
-            suiv = i[x + longueur_analyse]
-
+            suiv = mots[i][x + longueur_analyse]
             if t not in prems2:
                 # Si on ne connais pas encore la suite de caractère t 
                 # on lui crée une place dans le dictionnaire et on initialise 
                 # son compte de lettre
-                prems2[t] = [0 for i in range(len(lettres))]
+                prems2[t] = [0 for _ in range(len(lettres))]
             prems2[t][lettres.index(suiv)] += 1
-
 
     # On met toute les sommes en proba
     for i in prems2:
